@@ -86,6 +86,7 @@ mysql_variables =
 	connect_retries_on_failure="mysql"
 	connect_timeout_server="mysql"
 	connect_timeout_server_max="mysql"
+	redirection_mode="mysql"
 	connection_delay_multiplex_ms="mysql"
 	connection_max_age_ms="mysql"
 	connpoll_reset_queue_length="mysql"

@@ -1,0 +1,9 @@
+--- /tmp/CMakeLists.txt	2020-04-23 05:00:14.217027105 +0000
++++ ./plugins/connection/CMakeLists.txt	2020-04-23 04:58:49.837208025 +0000
+@@ -16,5 +16,5 @@
+ REGISTER_PLUGIN(TARGET redirection
+                 TYPE MARIADB_CLIENT_PLUGIN_CONNECTION
+                 CONFIGURATIONS STATIC DYNAMIC OFF
+-                DEFAULT DYNAMIC
++                DEFAULT STATIC
+                 SOURCES ${CC_SOURCE_DIR}/plugins/connection/redirection.c)

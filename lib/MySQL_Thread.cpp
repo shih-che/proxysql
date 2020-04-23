@@ -358,6 +358,7 @@ static char * mysql_thread_variables_names[]= {
 	(char *)"connection_max_age_ms",
 	(char *)"connect_timeout_server",
 	(char *)"connect_timeout_server_max",
+	(char *)"redirection_mode",
 	(char *)"eventslog_filename",
 	(char *)"eventslog_filesize",
 	(char *)"eventslog_default_log",
@@ -518,6 +519,7 @@ MySQL_Threads_Handler::MySQL_Threads_Handler() {
 	variables.connection_max_age_ms=0;
 	variables.connect_timeout_server=1000;
 	variables.connect_timeout_server_max=10000;
+	variables.redirection_mode=0;
 	variables.free_connections_pct=10;
 	variables.connect_retries_delay=1;
 	variables.monitor_enabled=true;
@@ -995,6 +997,7 @@ int MySQL_Threads_Handler::get_variable_int(const char *name) {
 			if (!strcmp(name,"query_retries_on_failure")) return (int)variables.query_retries_on_failure;
 			break;
 		case 'r':
+			if (!strcmp(name,"redirection_mode")) return (int)variables.redirection_mode;
 			if (!strcmp(name,"reset_connection_algorithm")) return (int)variables.reset_connection_algorithm;
 			break;
 		case 's':
@@ -1294,6 +1297,10 @@ char * MySQL_Threads_Handler::get_variable(char *name) {	// this is the public f
 	}
 	if (!strcasecmp(name,"connect_timeout_server_max")) {
 		sprintf(intbuf,"%d",variables.connect_timeout_server_max);
+		return strdup(intbuf);
+	}
+	if (!strcasecmp(name, "redirection_mode")) {
+		sprintf(intbuf,"%d",variables.redirection_mode);
 		return strdup(intbuf);
 	}
 	if (!strcasecmp(name,"free_connections_pct")) {
@@ -2290,6 +2297,16 @@ bool MySQL_Threads_Handler::set_variable(char *name, const char *value) {	// thi
 			return true;
 		} else {
 			return false;
+		}
+	}
+	if (!strcasecmp(name, "redirection_mode")) {
+		int intv=atoi(value);
+		if (intv >= 0 && intv <= 2)
+		{
+			variables.redirection_mode=intv;
+			return true;
+		} else {
+			return false;		
 		}
 	}
 	if (!strcasecmp(name,"connect_retries_delay")) {
@@ -4367,6 +4384,7 @@ void MySQL_Thread::refresh_variables() {
 	mysql_thread___connection_max_age_ms=GloMTH->get_variable_int((char *)"connection_max_age_ms");
 	mysql_thread___connect_timeout_server=GloMTH->get_variable_int((char *)"connect_timeout_server");
 	mysql_thread___connect_timeout_server_max=GloMTH->get_variable_int((char *)"connect_timeout_server_max");
+	mysql_thread___redirection_mode=GloMTH->get_variable_int((char *)"redirection_mode");
 	mysql_thread___free_connections_pct=GloMTH->get_variable_int((char *)"free_connections_pct");
 #ifdef IDLE_THREADS
 	mysql_thread___session_idle_ms=GloMTH->get_variable_int((char *)"session_idle_ms");

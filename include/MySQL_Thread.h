@@ -295,6 +295,7 @@ class MySQL_Threads_Handler
 		int connection_max_age_ms;
 		int connect_timeout_server;
 		int connect_timeout_server_max;
+		int redirection_mode;
 		int free_connections_pct;
 		int show_processlist_extended;
 #ifdef IDLE_THREADS

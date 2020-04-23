@@ -676,7 +676,17 @@ void MySQL_Connection::connect_start() {
 		}
 	}
 	if (parent->port) {
-		async_exit_status=mysql_real_connect_start(&ret_mysql, mysql, parent->address, userinfo->username, auth_password, userinfo->schemaname, parent->port, NULL, client_flags);
+		if (mysql_thread___redirection_mode == 1 || mysql_thread___redirection_mode == 2)
+		{
+			proxy_info("Connect to server via redirection plugin.");
+			char redir_host[256] = {0};
+			sprintf(redir_host, "redirection://%s%c", parent->address, '\0');
+			async_exit_status=mysql_real_connect_start(&ret_mysql, mysql, redir_host, userinfo->username, auth_password, userinfo->schemaname, parent->port, NULL, client_flags);
+		}
+		else
+		{
+			async_exit_status=mysql_real_connect_start(&ret_mysql, mysql, parent->address, userinfo->username, auth_password, userinfo->schemaname, parent->port, NULL, client_flags);
+		}
 	} else {
 		async_exit_status=mysql_real_connect_start(&ret_mysql, mysql, "localhost", userinfo->username, auth_password, userinfo->schemaname, parent->port, parent->address, client_flags);
 	}
