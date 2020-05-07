@@ -676,15 +676,15 @@ void MySQL_Connection::connect_start() {
 		}
 	}
 	if (parent->port) {
-		if (mysql_thread___redirection_mode == 1 || mysql_thread___redirection_mode == 2)
+		if (mysql_thread___redirection_mode == 1 || mysql_thread___redirection_mode == 2 || mysql_thread___redirection_mode == 0)
 		{
-			proxy_info("Connect to server via redirection plugin.");
+			proxy_info("Connect to server via redirection plugin.\n");
 
-            my_bool ssl_enforced = 1;
-            mysql_options(mysql, MYSQL_OPT_SSL_ENFORCE, &ssl_enforced);
+                        my_bool ssl_enforced = 1;
+                        mysql_options(mysql, MYSQL_OPT_SSL_ENFORCE, &ssl_enforced);
 
-            enable_redirect redirection_mode = mysql_thread___redirection_mode == 1 ? REDIRECTION_ON : REDIRECTION_PREFERRED;
-            mysql_options(mysql, MYSQL_OPT_USE_REDIRECTION, &redirection_mode);
+                        enable_redirect redirection_mode = static_cast<enable_redirect>(mysql_thread___redirection_mode);
+                        mysql_options(mysql, MYSQL_OPT_USE_REDIRECTION, &redirection_mode);
 
 			char redir_host[256] = {0};
 			sprintf(redir_host, "redirection://%s%c", parent->address, '\0');
