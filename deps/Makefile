@@ -119,8 +119,8 @@ jemalloc: jemalloc/jemalloc/lib/libjemalloc.a
 
 
 mariadb-client-library/mariadb_client/libmariadb/libmariadbclient.a: libssl/openssl/libssl.a
-	cd mariadb-client-library && rm -rf mariadb-connector-c-3.1.4-src
-	cd mariadb-client-library && tar -zxf mariadb-connector-c-3.1.4-src.tar.gz
+	cd mariadb-client-library && rm -rf mariadb-connector-c-3.1.4-redirect
+	cd mariadb-client-library && tar -zxf mariadb-connector-c-3.1.4-redirect.tar.gz
 	cd mariadb-client-library/mariadb_client && patch ./plugins/auth/CMakeLists.txt < ../plugin_auth_CMakeLists.txt.patch
 	cd mariadb-client-library/mariadb_client && patch ./plugins/connection/CMakeLists.txt < ../plugin_connection_CMakeLists.txt.patch
 	cd mariadb-client-library/mariadb_client && patch ./CMakeLists.txt < ../CMakeLists.txt.patch
