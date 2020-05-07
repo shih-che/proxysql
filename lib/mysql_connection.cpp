@@ -679,6 +679,13 @@ void MySQL_Connection::connect_start() {
 		if (mysql_thread___redirection_mode == 1 || mysql_thread___redirection_mode == 2)
 		{
 			proxy_info("Connect to server via redirection plugin.");
+
+            my_bool ssl_enforced = 1;
+            mysql_options(mysql, MYSQL_OPT_SSL_ENFORCE, &ssl_enforced);
+
+            enable_redirect redirection_mode = mysql_thread___redirection_mode == 1 ? REDIRECTION_ON : REDIRECTION_PREFERRED;
+            mysql_options(mysql, MYSQL_OPT_USE_REDIRECTION, &redirection_mode);
+
 			char redir_host[256] = {0};
 			sprintf(redir_host, "redirection://%s%c", parent->address, '\0');
 			async_exit_status=mysql_real_connect_start(&ret_mysql, mysql, redir_host, userinfo->username, auth_password, userinfo->schemaname, parent->port, NULL, client_flags);
