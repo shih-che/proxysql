@@ -123,6 +123,7 @@ mariadb-client-library/mariadb_client/libmariadb/libmariadbclient.a: libssl/open
 	cd mariadb-client-library && tar -zxf mariadb-connector-c-3.1.4-redirect.tar.gz
 	cd mariadb-client-library/mariadb_client && patch ./plugins/auth/CMakeLists.txt < ../plugin_auth_CMakeLists.txt.patch
 	cd mariadb-client-library/mariadb_client && patch ./plugins/connection/CMakeLists.txt < ../plugin_connection_CMakeLists.txt.patch
+	cd mariadb-client-library/mariadb_client && patch ./plugins/connection/redirection.c < ../plugin_connection_redirection.c.patch
 	cd mariadb-client-library/mariadb_client && patch ./CMakeLists.txt < ../CMakeLists.txt.patch
 #	cd mariadb-client-library/mariadb_client && cmake . -DOPENSSL_ROOT_DIR=$(shell pwd)/libssl/openssl/ -DOPENSSL_LIBRARIES=$(shell pwd)/libssl/openssl/ .
 	cd mariadb-client-library/mariadb_client && cmake . -DCMAKE_BUILD_TYPE=RelWithDebInfo -DOPENSSL_ROOT_DIR=$(shell pwd)/libssl/openssl/ -DOPENSSL_LIBRARIES=$(shell pwd)/libssl/openssl/ .
